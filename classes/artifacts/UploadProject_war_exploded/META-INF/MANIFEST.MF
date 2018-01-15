@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: uploadproject
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: wubingyu
+Implementation-Vendor-Id: com.cn.company
+Created-By: IntelliJ IDEA
+Build-Jdk: 1.8.0_111
+Main-Class: ${start-class}
+
