@@ -1,16 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title>simple video upload</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
 </head>
-<body>
-    <form method="post" action="/uploadVideo" enctype="multipart/form-data" >
-        <table border="1">
-            <tr><td>文件：</td><td><input type="file" name="file"/></td></tr>
-            <tr><td colspan="2"><input type="submit" value="sumbit"/></td></tr>
-        </table>
-    </form>
+<script th:inline="javascript">
 
+    $(document).ready(function() {
+        $("#upload-file-input").on("change", uploadFile);
+        $("#upload-file-input").on("change", check());
+    });
+
+    /**
+     * Upload the file sending it via Ajax at the Spring Boot server.
+     */
+    function uploadFile() {
+        $.ajax({
+            url: "/uploadFile",
+            type: "POST",
+            data: new FormData($("#upload-file-form")[0]),
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+//                if(data) {
+//                    $('#progressbar').show();
+//                    console.log(data);
+//                    if (data == '100') {
+//                        clearInterval(interval);
+//                    } else {
+//                        $('#progressbardata').width(data+'%');
+//                    }
+//                }
+            },
+            error: function () {
+                // Handle upload error
+                // ...
+            }
+        });
+    } // function uploadFile
+
+
+    function upload() {
+        $('#uploadForm').submit();
+        var interval = setInterval(function() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/getProgress",
+                dataType: 'json',
+                cache: false,
+                timeout: 600000,
+                success : function(data) {
+                    if(data) {
+                        console.log(data);
+                        if (data == '100') {
+                            clearInterval(interval);
+                        } else {
+                            $('#progressbardata').width(data+'%');
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }, 100);
+    }
+
+
+    function haha(){
+        console.log("hahah")
+    }
+
+
+
+    function check() {
+        var interval = setInterval(function() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/getProgress",
+                dataType: 'json',
+                cache: false,
+                timeout: 600000,
+                success : function(data) {
+                    if(data) {
+//                        $('#progressbar').show();
+                        console.log(data);
+                        if (data == '100') {
+                            clearInterval(interval);
+                        } else {
+                            $('#progressbardata').width(data+'%');
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }, 100);
+    }
+
+</script>
+<body>
+    <form id="upload-file-form">
+        <label for="upload-file-input">Upload your file:</label>
+        <input id="upload-file-input" type="file" name="uploadfile" accept="*" />
+    </form>
+    <p></p>
+    <button onclick="check()">check</button>
+
+    <p></p>
+    <div class="progress">
+        <div class="progress-bar" id="progressbardata" role="progressbar" aria-valuenow="60"
+             aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="sr-only">40% 完成</span>
+        </div>
+    </div>
 </body>
 </html>

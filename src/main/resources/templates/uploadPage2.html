@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>simple video upload</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+<script th:inline="javascript">
+    function upload() {
+        $('#uploadForm').submit();
+//        var interval = setInterval(function() {
+//            $.ajax({
+//                type: "POST",
+//                contentType: "application/json",
+//                url: "/getProgress",
+//                dataType: 'json',
+//                cache: false,
+//                timeout: 600000,
+//                success : function(data) {
+//                    if(data) {
+//                        $('#progressbar').show();
+//                        console.log(data);
+//                        if (data == '100') {
+//                            clearInterval(interval);
+//                        } else {
+//                            $('#progressbardata').width(data+'%');
+//                        }
+//                    }
+//                },
+//                error: function (xhr, ajaxOptions, thrownError) {
+//                    alert(xhr.status);
+//                    alert(thrownError);
+//                }
+//            });
+//        }, 100);
+    }
+
+
+    function haha(){
+        console.log("hahah")
+    }
+
+
+
+    function check() {
+        var interval = setInterval(function() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/getProgress",
+                dataType: 'json',
+                cache: false,
+                timeout: 600000,
+                success : function(data) {
+                    if(data) {
+                        $('#progressbar').show();
+                        console.log(data);
+                        if (data == '100') {
+                            clearInterval(interval);
+                        } else {
+                            $('#progressbardata').width(data+'%');
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }, 100);
+    }
+
+    function uploadFile() {
+        var fileObj = $("#file").get(0).files[0]; // js 获取文件对象
+        console.info("上传的文件："+fileObj);
+        var FileController = "/uploadVideo"; // 接收上传文件的后台地址
+        // FormData 对象
+        var form = new FormData();
+        // form.append("author", "hooyes"); // 可以增加表单数据
+        form.append("file", fileObj); // 文件对象
+        // XMLHttpRequest 对象
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", FileController, true);
+        xhr.onload = function() {
+            console.log("上传完成");
+        };
+        xhr.upload.addEventListener("progress", progressFunction, false);
+        xhr.send(form);
+    }
+
+    function progressFunction(evt) {
+        if (evt.lengthComputable) {
+            var completePercent = Math.round(evt.loaded / evt.total * 100)+ "%";
+            $('#progressbardata').width(completePercent+'%');
+        }
+    };
+</script>
+<body>
+    <form method="post" id="uploadForm" action="/uploadVideo" enctype="multipart/form-data" >
+        <table border="1">
+            <tr><td>文件：</td><td><input type="file" id="file" name="file"/></td></tr>
+        </table>
+    </form>
+    <p></p>
+    <button onclick="uploadFile()" >submit</button>
+    <p></p>
+    <button onclick="check()">check</button>
+
+    <p></p>
+    <div class="control-group" id="progressbar" style="display:none;">
+        <div class="progress progress-striped active">
+            <div class="bar" id="progressbardata" style="width: 0;"></div>
+        </div>
+    </div>
+</body>
+</html>
