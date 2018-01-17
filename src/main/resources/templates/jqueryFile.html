@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Jquery 断点上传</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js//Huploadify_V2/js/jquery.Huploadify.js"></script>
+    <link rel="stylesheet" href="js/Huploadify_V2/css/Huploadify.css" />
+</head>
+<script th:inline="javascript">
+    $(function () {
+        window.onunload=function(){
+            window.localStorage.clear();
+        }
+    });
+
+    $(function(){
+        var up = $('#upload').Huploadify({
+            auto:false,
+            fileTypeExts:'*.xml;*.jpg;*.png;*.exe;*.mp3;*.mp4;*.zip;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;*.pdf;',
+            multi:true,
+            fileSizeLimit:99999999,
+            breakPoints:true,
+            saveInfoLocal:true,
+            showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+            showUploadedSize:true,
+            removeTimeout:9999999,
+            uploader:'/uploadFile2',
+            onUploadSuccess:function(){
+                alert('上传成功');
+            },
+            /*getUploadedSize:function(file){
+             var data = {
+             data : {
+             fileName : file.name,
+             lastModifiedDate : file.lastModifiedDate.getTime()
+             }
+             };
+             var url = 'http://localhost/uploadfile/';
+             var uploadedSize = 0;
+             $.ajax({
+             url : url,
+             data : data,
+             async : false,
+             type : 'POST',
+             success : function(returnData){
+             returnData = JSON.parse(returnData);
+             uploadedSize = returnData.uploadedSize;
+             }
+             });
+             return uploadedSize;
+             }	*/
+        });
+
+        $('#btn1').click(function(){
+            up.stop();
+        });
+        $('#btn2').click(function(){
+            up.upload('*');
+        });
+        $('#btn3').click(function(){
+            up.cancel('*');
+        });
+        $('#btn4').click(function(){
+            up.disable();
+        });
+        $('#btn5').click(function(){
+            up.ennable();
+        });
+
+
+    });
+
+
+
+</script>
+<body>
+<div id="upload"></div>
+<button id="btn1">stop</button>
+<button id="btn2">upload</button>
+<button id="btn3">cancel</button>
+<button id="btn4">disable</button>
+<button id="btn5">ennable</button>
+</body>
+</html>

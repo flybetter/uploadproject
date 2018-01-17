@@ -27,7 +27,8 @@ public class UploadprojectApplication {
 	@Bean(name = "multipartResolver")
 	public MultipartResolver multipartResolver(){
 		CustomMultipartResolver customMultipartResolver=new CustomMultipartResolver();
-		customMultipartResolver.setMaxInMemorySize(20*1024*1024);
+		customMultipartResolver.setMaxInMemorySize(100);
+//		customMultipartResolver.setMaxUploadSize(100);
 		return customMultipartResolver;
 	}
 }

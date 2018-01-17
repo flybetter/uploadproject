@@ -7,8 +7,11 @@
 <body>
     <h1>你要敢什么</h1>
     <span th:text="'欢迎光临,'+${name}+'!'">111111</span>
+    <p></p>
     <a th:href="@{/uploadPage}"> 单个文件上传</a>
+    <p></p>
     <a th:href="@{/uploadPatchPage}"> 多个文件上传</a>
-
+    <p></p>
+    <a th:href="@{/jqueryFile}">使用jqueryFile实现断点上传</a>
 </body>
 </html>

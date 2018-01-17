@@ -9,11 +9,6 @@
 </head>
 <script th:inline="javascript">
 
-    $(document).ready(function() {
-        $("#upload-file-input").on("change", uploadFile);
-        $("#upload-file-input").on("change", check());
-    });
-
     /**
      * Upload the file sending it via Ajax at the Spring Boot server.
      */
@@ -27,15 +22,8 @@
             contentType: false,
             cache: false,
             success: function (data) {
-//                if(data) {
-//                    $('#progressbar').show();
-//                    console.log(data);
-//                    if (data == '100') {
-//                        clearInterval(interval);
-//                    } else {
-//                        $('#progressbardata').width(data+'%');
-//                    }
-//                }
+                $('#progressbardata').hide();
+                $('.progress').html("file upload success");
             },
             error: function () {
                 // Handle upload error
@@ -80,7 +68,7 @@
 
 
 
-    function check() {
+    function checkDemo() {
         var interval = setInterval(function() {
             $.ajax({
                 type: "POST",
@@ -91,7 +79,6 @@
                 timeout: 600000,
                 success : function(data) {
                     if(data) {
-//                        $('#progressbar').show();
                         console.log(data);
                         if (data == '100') {
                             clearInterval(interval);
@@ -115,8 +102,11 @@
         <input id="upload-file-input" type="file" name="uploadfile" accept="*" />
     </form>
     <p></p>
+    <button id="submit" onclick="checkDemo();uploadFile();a">submit</button>
+    <p></p>
     <button onclick="check()">check</button>
-
+    <p></p>
+    <button onclick="haha()">haha</button>
     <p></p>
     <div class="progress">
         <div class="progress-bar" id="progressbardata" role="progressbar" aria-valuenow="60"
