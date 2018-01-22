@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>list all data</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<script>
+    function transcoding(obj){
+        var formats=obj.next("").value;
+        var formats=obj.next("").value;
+        var formats=obj.next("").value;
+        $.ajax({
+            url:"",
+            data:{},
+            type:"POST",
+            success:function () {
+                
+            },
+            error:function () {
+                
+            }
+            
+        })
+    }
+</script>
+<body>
+    <table border="1">
+        <tr><td  colspan="2">the input fileNames</td></tr>
+        <tr th:each="fileName:${inputFileNames}">
+            <td th:text="${fileName}">None</td>
+            <td> <a onclick="transcoding()"></a>
+                编码:<select>
+                        <option value="0">h264</option>
+                        <option value="1">wav</option>
+                        <option value="2">flv</option>
+                    </select>
+            </td>
+        </tr>
+        <tr><td>the output fileNames</td></tr>
+        <tr th:each="fileName:${outputFileNames}">
+            <td th:text="${fileName}">None</td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>
