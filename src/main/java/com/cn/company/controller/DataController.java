@@ -1,8 +1,14 @@
 package com.cn.company.controller;
 
+import com.cn.company.util.code.CodeUtil;
+import com.cn.company.util.configure.FfmpegValues;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +23,9 @@ import java.util.List;
  */
 @Controller
 public class DataController {
+
+    @Autowired
+    private FfmpegValues ffmpegValues;
 
     @GetMapping(value ="listDataPager")
     public String listDataPager(Model model){
@@ -45,7 +54,21 @@ public class DataController {
 
         model.addAttribute("inputFileNames",inputFileNameList);
         model.addAttribute("outputFileNames",outputFileList);
+        model.addAttribute("formats",ffmpegValues.getFormats());
+        model.addAttribute("codecs",ffmpegValues.getCodecs());
         return "listData";
+    }
+
+    @PostMapping(value = "/code")
+    @ResponseBody
+    public void code(@RequestParam(value = "format") String format,
+                     @RequestParam(value = "inputName") String inputName,
+                     @RequestParam(value = "outputName")String outputName){
+
+        CodeUtil.clearOutputFile();
+
+        CodeUtil.Coding(format, inputName, outputName);
+
     }
 
 

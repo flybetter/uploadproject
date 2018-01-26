@@ -6,13 +6,24 @@
     <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <script>
+    $(function () {
+        setInterval(function(){
+            console.log("loading")
+            location.reload();
+        },10000)
+    })
+
     function transcoding(obj){
-        var formats=obj.next("").value;
-        var formats=obj.next("").value;
-        var formats=obj.next("").value;
+        console.log(obj);
+        var outputName=$(obj).prev().val();
+        console.log(outputName)
+        var format=$(obj).prev().prev().find("option:selected").text();
+        console.log(format);
+        var inputName=$(obj).parent().prev().html();
+        console.log(inputName);
         $.ajax({
-            url:"",
-            data:{},
+            url:"/code",
+            data:{format:format,inputName:inputName,outputName:outputName},
             type:"POST",
             success:function () {
                 
@@ -28,16 +39,20 @@
     <table border="1">
         <tr><td  colspan="2">the input fileNames</td></tr>
         <tr th:each="fileName:${inputFileNames}">
-            <td th:text="${fileName}">None</td>
+            <td  th:text="${fileName}">None</td>
             <td> <a onclick="transcoding()"></a>
-                编码:<select>
-                        <option value="0">h264</option>
-                        <option value="1">wav</option>
-                        <option value="2">flv</option>
+                文件类型:<select name="format">
+                        <option th:each="format:${formats}" th:value="${format}" th:text="${format}"></option>
                     </select>
+                <!--编码:<select name="codec">-->
+                        <!--<option th:each="codec:${codecs}" value="${codec}" th:text="${codec}"></option>-->
+                       <!--</select>-->
+                文件名称:<input type="text" value="" />
+
+                <button onclick="transcoding(this)" >transcoding</button>
             </td>
         </tr>
-        <tr><td>the output fileNames</td></tr>
+        <tr><td colspan="2">the output fileNames</td></tr>
         <tr th:each="fileName:${outputFileNames}">
             <td th:text="${fileName}">None</td>
             <td></td>
